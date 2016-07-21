@@ -1,5 +1,5 @@
 {
-  "name": "node-js-sample",
+  "name": "nodejs-ose-proxy",
   "version": "0.2.0",
   "description": "A sample Node.js app using Express 4",
   "main": "index.js",
@@ -7,7 +7,9 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "express": "^4.13.3"
+    "express": "^4.13.3",
+    "http-proxy": "^1.14.0",
+    "http":"^0.0.0"
   },
   "engines": {
     "node": "4.0.0"
