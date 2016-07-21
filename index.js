@@ -9,7 +9,7 @@ var http = require('http'),
 //
 httpProxy.createProxyServer({target:serviceUrl,auth:'admin:admin'}).listen(8080); // See (†)
 
-
+console.log("listening on port 8080 and proxying requests to " + serviceUrl);
 
 //
 // DO NOT Create your target server
