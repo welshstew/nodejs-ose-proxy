@@ -1,9 +1,15 @@
 var http = require('http'),
-    httpProxy = require('http-proxy');
+    httpProxy = require('http-proxy'),
+    serviceUrl   = process.env.SERVICE_URL; //http://node-js-sample.nodejs:8080
+
+
+
 //
 // Create your proxy server and set the target in the options.
 //
-httpProxy.createProxyServer({target:'http://node-js-sample.nodejs:8080'}).listen(8080); // See (†)
+httpProxy.createProxyServer({target:serviceUrl}).listen(8080); // See (†)
+
+
 
 //
 // DO NOT Create your target server

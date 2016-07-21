@@ -149,6 +149,6 @@ objects:
       name: nodejs-ose-proxy
 parameters:
 - name: "REGISTRY_IP"
-  value: "172.30.123.229"
+  value: "172.30.160.81"
 - name: "IS_NAMESPACE"
   value: "nodejs"
