@@ -134,19 +134,19 @@ objects:
       deploymentconfig: nodejs-ose-proxy
     sessionAffinity: None
     type: ClusterIP
-apiVersion: v1
-kind: Route
-metadata:
-  labels:
-    app: nodejs-ose-proxy
-  name: nodejs-ose-proxy
-spec:
-  host: nodejs-ose-proxy-nodejs.rhel-cdk.10.1.2.2.xip.io
-  port:
-    targetPort: 8080-tcp
-  to:
-    kind: Service
+- apiVersion: v1
+  kind: Route
+  metadata:
+    labels:
+      app: nodejs-ose-proxy
     name: nodejs-ose-proxy
+  spec:
+    host: nodejs-ose-proxy-nodejs.rhel-cdk.10.1.2.2.xip.io
+    port:
+      targetPort: 8080-tcp
+    to:
+      kind: Service
+      name: nodejs-ose-proxy
 parameters:
 - name: "REGISTRY_IP"
   value: "172.30.123.229"
