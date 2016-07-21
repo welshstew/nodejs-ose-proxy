@@ -1,0 +1,154 @@
+apiVersion: v1
+kind: Template
+metadata:
+  creationTimestamp: null
+  name: nodejs-ose-proxy
+objects:
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: nodejs-ose-proxy
+    name: nodejs-ose-proxy
+  spec:
+    output:
+      to:
+        kind: ImageStreamTag
+        name: nodejs-ose-proxy:latest
+    postCommit: {}
+    resources: {}
+    source:
+      git:
+        uri: https://github.com/welshstew/nodejs-ose-proxy.git
+      secrets: []
+      type: Git
+    strategy:
+      sourceStrategy:
+        from:
+          kind: ImageStreamTag
+          name: nodejs:0.10
+          namespace: openshift
+      type: Source
+    triggers:
+    - type: ConfigChange
+    - imageChange: {}
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    generation: 1
+    labels:
+      app: nodejs-ose-proxy
+    name: nodejs-ose-proxy
+  spec:
+    tags:
+    - annotations: null
+      from:
+        kind: DockerImage
+        name: ${REGISTRY_IP}:5000/${IS_NAMESPACE}/nodejs-ose-proxy:latest
+      generation: null
+      importPolicy: {}
+      name: latest
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: nodejs-ose-proxy
+    name: nodejs-ose-proxy
+  spec:
+    replicas: 1
+    selector:
+      app: nodejs-ose-proxy
+      deploymentconfig: nodejs-ose-proxy
+    strategy:
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 25%
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        annotations:
+          openshift.io/container.nodejs-ose-proxy.image.entrypoint: '["container-entrypoint","/bin/sh","-c","$STI_SCRIPTS_PATH/usage"]'
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          app: nodejs-ose-proxy
+          deploymentconfig: nodejs-ose-proxy
+      spec:
+        containers:
+        - image: "${IS_NAMESPACE}/nodejs-ose-proxy:latest"
+          imagePullPolicy: Always
+          name: nodejs-ose-proxy
+          env:
+          - name: "PORT"
+            value: "8080"
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    test: false
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - nodejs-ose-proxy
+        from:
+          kind: ImageStreamTag
+          name: nodejs-ose-proxy:latest
+      type: ImageChange
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: nodejs-ose-proxy
+    name: nodejs-ose-proxy
+  spec:
+    ports:
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: nodejs-ose-proxy
+      deploymentconfig: nodejs-ose-proxy
+    sessionAffinity: None
+    type: ClusterIP
+apiVersion: v1
+kind: Route
+metadata:
+  labels:
+    app: nodejs-ose-proxy
+  name: nodejs-ose-proxy
+spec:
+  host: nodejs-ose-proxy-nodejs.rhel-cdk.10.1.2.2.xip.io
+  port:
+    targetPort: 8080-tcp
+  to:
+    kind: Service
+    name: nodejs-ose-proxy
+parameters:
+- name: "REGISTRY_IP"
+  value: "172.30.123.229"
+- name: "IS_NAMESPACE"
+  value: "nodejs"
