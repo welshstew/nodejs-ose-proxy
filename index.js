@@ -1,14 +1,21 @@
 var http = require('http'),
     httpProxy = require('http-proxy'),
-    serviceUrl   = process.env.SERVICE_URL; //http://node-js-sample.nodejs:8080
+    serviceUrl = process.env.SERVICE_URL; //http://node-js-sample.nodejs:8080
 
+
+var proxy = httpProxy.createProxyServer({});
+
+var server = http.createServer(function(req, res) {
+  // You can define here your custom logic to handle the request
+  // and then proxy the request.
+  console.log(req)
+  proxy.web(req, res, { target: serviceUrl });
+});
 
 
 console.log("listening on port 8080 and proxying requests to " + serviceUrl);
-//
-// Create your proxy server and set the target in the options.
-//
-httpProxy.createProxyServer({target:serviceUrl,auth:'admin:admin'}).listen(8080); // See (†)
+
+server.listen(8080);
 
 
 
