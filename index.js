@@ -4,12 +4,13 @@ var http = require('http'),
 
 
 
+console.log("listening on port 8080 and proxying requests to " + serviceUrl);
 //
 // Create your proxy server and set the target in the options.
 //
 httpProxy.createProxyServer({target:serviceUrl,auth:'admin:admin'}).listen(8080); // See (†)
 
-console.log("listening on port 8080 and proxying requests to " + serviceUrl);
+
 
 //
 // DO NOT Create your target server
