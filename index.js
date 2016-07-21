@@ -7,7 +7,7 @@ var http = require('http'),
 //
 // Create your proxy server and set the target in the options.
 //
-httpProxy.createProxyServer({target:serviceUrl}).listen(8080); // See (†)
+httpProxy.createProxyServer({target:serviceUrl,auth:'admin:admin'}).listen(8080); // See (†)
 
 
 
