@@ -3,7 +3,7 @@ var http = require('http'),
 //
 // Create your proxy server and set the target in the options.
 //
-httpProxy.createProxyServer({target:'http://node-js-sample.nodejs:8080'}).listen(8000); // See (†)
+httpProxy.createProxyServer({target:'http://node-js-sample.nodejs:8080'}).listen(8080); // See (†)
 
 //
 // DO NOT Create your target server
