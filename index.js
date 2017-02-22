@@ -1,6 +1,6 @@
 var http = require('http'),
     httpProxy = require('http-proxy'),
-    auth = require('http-auth'),
+    auth = require('http-auth')
     //serviceUrl = process.env.SERVICE_URL; //http://node-js-sample.nodejs:8080
 
 var basic = auth.basic({
