@@ -12,7 +12,7 @@ var proxy = httpProxy.createProxyServer({});
 var server = http.createServer(basic, function(req, res) {
   // You can define here your custom logic to handle the request
   // and then proxy the request.
-  var serviceUrl = req.header('targetsvc')
+  var serviceUrl = req.get('targetsvc')
   console.log(req)
   proxy.web(req, res, { target: serviceUrl });
 });
