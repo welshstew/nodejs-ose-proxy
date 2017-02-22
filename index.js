@@ -14,7 +14,7 @@ console.log('hello');
 var server = http.createServer(basic, function(req, res) {
   // You can define here your custom logic to handle the request
   // and then proxy the request.
-  var serviceUrl = req.get('targetsvc')
+  var serviceUrl = req.headers['targetsvc']
   console.log('thing: ' + serviceUrl)
   console.log(req)
   proxy.web(req, res, { target: serviceUrl });
