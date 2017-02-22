@@ -1,7 +1,7 @@
 var http = require('http'),
     httpProxy = require('http-proxy'),
     auth = require('http-auth'),
-    serviceUrl = process.env.SERVICE_URL; //http://node-js-sample.nodejs:8080
+    //serviceUrl = process.env.SERVICE_URL; //http://node-js-sample.nodejs:8080
 
 var basic = auth.basic({
     file: "/opt/app-root/src/users.htpasswd"
@@ -12,6 +12,7 @@ var proxy = httpProxy.createProxyServer({});
 var server = http.createServer(basic, function(req, res) {
   // You can define here your custom logic to handle the request
   // and then proxy the request.
+  var serviceUrl = req.header('targetsvc')
   console.log(req)
   proxy.web(req, res, { target: serviceUrl });
 });
